@@ -24,6 +24,11 @@ set (GLM_DIR ${PROJECT_SOURCE_DIR}/subprojects/external/glm)
 set (GLM_BUILD_TESTS OFF)
 add_subdirectory(${GLM_DIR})
 
+if (WIN32 AND MSVC)
+    set_target_properties(glm PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
+
+endif()
+
 add_subdirectory(${PROJECT_SOURCE_DIR}/subprojects/glsl_loader)
 
 set (LIBRARIES
