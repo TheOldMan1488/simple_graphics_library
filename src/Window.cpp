@@ -4,7 +4,7 @@
 #include "Color.h"
 
 
-Window::Window(int width, int height, const std::string& title)
+Window::Window(int width, int height,/* const Camera& camera,*/ const std::string& title) //: camera(&camera)
 {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
@@ -52,3 +52,8 @@ void Window::pollEvents()
 {
     glfwPollEvents();
 }
+
+// void Window::setCamera(const Camera& camera)
+// {
+//     this->camera = &camera;
+// }

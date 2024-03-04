@@ -47,7 +47,7 @@ void ShaderLoader::loadSourceFromString(const std::string& shaderSource)
     glShaderSource(this->shader.id, 1, &shaderSourceCStr, nullptr);
 }
 
-void ShaderLoader::compile()
+void ShaderLoader::compileShader()
 {
     glCompileShader(this->shader.id);
 
@@ -71,4 +71,9 @@ void ShaderLoader::compile()
 Shader ShaderLoader::getShader()
 {
     return std::move(this->shader);
+}
+
+void ShaderLoader::resetShader()
+{
+    this->shader = Shader();
 }

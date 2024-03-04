@@ -50,7 +50,10 @@ set (SOURCES
     ${PROJECT_SOURCE_DIR}/src/GLFW.cpp
     ${PROJECT_SOURCE_DIR}/src/Window.cpp
     ${PROJECT_SOURCE_DIR}/src/Color.cpp
+    ${PROJECT_SOURCE_DIR}/src/Model.cpp
     ${PROJECT_SOURCE_DIR}/src/Cube.cpp
+    ${PROJECT_SOURCE_DIR}/src/Camera.cpp
+    ${PROJECT_SOURCE_DIR}/src/CameraBuilder.cpp
 )
 
 add_executable(${PROJECT_NAME} ${SOURCES})

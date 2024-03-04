@@ -6,7 +6,7 @@
 #include <glsl_loader/ShaderLoader.h>
 
 
-Cube::Cube(float size) : VAO(0), positionVBO(0), colorVBO(0), indexEBO(0), shaderProgram(0), angle(0)
+Cube::Cube(float size) : angle(0)
 {
     glGenVertexArrays(1, &this->VAO);
     glBindVertexArray(this->VAO);
@@ -62,12 +62,12 @@ Cube::Cube(float size) : VAO(0), positionVBO(0), colorVBO(0), indexEBO(0), shade
 
 	shaderLoader.createShader(GL_VERTEX_SHADER);
     shaderLoader.loadSourceFromFile(cubeShadersPath + vertexShaderName);
-    shaderLoader.compile();
+    shaderLoader.compileShader();
     glslLoader::Shader vertexShader = shaderLoader.getShader();
 
     shaderLoader.createShader(GL_FRAGMENT_SHADER);
     shaderLoader.loadSourceFromFile(cubeShadersPath + fragmentShaderName);
-    shaderLoader.compile();
+    shaderLoader.compileShader();
     glslLoader::Shader fragmentShader = shaderLoader.getShader();
 
     this->shaderProgram = glCreateProgram();
@@ -76,15 +76,7 @@ Cube::Cube(float size) : VAO(0), positionVBO(0), colorVBO(0), indexEBO(0), shade
     glLinkProgram(this->shaderProgram);
 }   
 
-Cube::~Cube()
-{
-    glDeleteProgram(this->shaderProgram);
-    glDeleteVertexArrays(1, &this->VAO);
-    glDeleteBuffers(1, &this->positionVBO);
-    glDeleteBuffers(1, &this->colorVBO);
-}
-
-void Cube:: draw()
+void Cube::draw(glm::mat4 viewMatrix, glm::mat4 projectionMatrix)
 {
     glBindVertexArray(this->VAO);
     glEnableVertexAttribArray(0);
@@ -92,8 +84,10 @@ void Cube:: draw()
 
     glUseProgram(this->shaderProgram);
 
+    GLuint viewMatrixId = glGetUniformLocation(this->shaderProgram, "view");
+    glUniformMatrix4fv(viewMatrixId, 1, GL_FALSE, glm::value_ptr(viewMatrix));
+
     GLuint projectionMatrixId = glGetUniformLocation(this->shaderProgram, "projection");
-    glm::mat4 projectionMatrix = glm::ortho(-1.5f, 1.5f, -1.f, 1.f, -1.f, 1.f);
     glUniformMatrix4fv(projectionMatrixId, 1, GL_FALSE, glm::value_ptr(projectionMatrix));
 
     GLuint modelMatrixId = glGetUniformLocation(this->shaderProgram, "model");
@@ -119,6 +113,12 @@ void Cube::randomizeColorBuffer(size_t size, GLint step, GLfloat* buffer)
     {
         for (int j = 0; j < step; ++j)
         {
+            if (j == 3)
+            {
+                buffer[i + j] = 0.7f;
+                continue;
+            }
+
             buffer[i + j] = dist(gen);
         }
     }

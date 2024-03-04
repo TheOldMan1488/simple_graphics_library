@@ -1,23 +1,15 @@
 #pragma once
-#include "gl/glew.h"
-#include "gl/gl.h"
+#include "Model.h"
 
 
-class Cube
+class Cube : public Model
 {
 public:
     Cube(float size);
-    ~Cube();
-    void draw();
+    
+    virtual void draw(glm::mat4 viewMatrix, glm::mat4 projectionMatrix) override;
 
 private:
-    GLuint VAO;
-    GLuint positionVBO;
-    GLuint colorVBO;
-    GLuint indexEBO;
-
-    GLuint shaderProgram;
-
     GLfloat angle;
 
     void randomizeColorBuffer(size_t size, GLint step, GLfloat* buffer);

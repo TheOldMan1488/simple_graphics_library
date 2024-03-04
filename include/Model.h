@@ -2,18 +2,18 @@
 #include <string>
 #include <gl/glew.h>
 #include <gl/gl.h>
+#include <glm/glm.hpp>
 
 
 class Model
 {
 public:    
     Model();
-    void draw();
+    virtual ~Model();
+
+    virtual void draw(glm::mat4 viewMatrix, glm::mat4 projectionMatrix) = 0;
 
 protected:
-    
-
-private:
     GLuint VAO;
     GLuint positionVBO;
     GLuint colorVBO;

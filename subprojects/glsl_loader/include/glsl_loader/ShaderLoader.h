@@ -13,8 +13,10 @@ namespace glslLoader
         void createShader(GLenum glShaderType);
         void loadSourceFromFile(const std::string& fileName);
         void loadSourceFromString(const std::string& shaderSource);
-        void compile();
+        void compileShader();
         Shader getShader();
+
+        void resetShader();
 
     private:
         Shader shader;
