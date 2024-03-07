@@ -22,11 +22,13 @@ public:
     void swapBuffers();
     void pollEvents();
 
-    //void setCamera(const Camera& camera);
+    void setCamera(Camera& camera);
 
     void draw(const Model& model);
 
 private:
     GLFWwindow* window;
-    //const Camera* camera;
+    Camera* camera;
+
+    static void framebufferSizeCallback(GLFWwindow* window, int width, int height);
 };

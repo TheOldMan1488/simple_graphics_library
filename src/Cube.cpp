@@ -6,7 +6,7 @@
 #include <glsl_loader/ShaderLoader.h>
 
 
-Cube::Cube(float size) : angle(0)
+Cube::Cube(float size)
 {
     glGenVertexArrays(1, &this->VAO);
     glBindVertexArray(this->VAO);
@@ -76,7 +76,7 @@ Cube::Cube(float size) : angle(0)
     glLinkProgram(this->shaderProgram);
 }   
 
-void Cube::draw(glm::mat4 viewMatrix, glm::mat4 projectionMatrix)
+void Cube::draw(glm::mat4 viewMatrix, glm::mat4 projectionMatrix) const
 {
     glBindVertexArray(this->VAO);
     glEnableVertexAttribArray(0);
@@ -91,11 +91,8 @@ void Cube::draw(glm::mat4 viewMatrix, glm::mat4 projectionMatrix)
     glUniformMatrix4fv(projectionMatrixId, 1, GL_FALSE, glm::value_ptr(projectionMatrix));
 
     GLuint modelMatrixId = glGetUniformLocation(this->shaderProgram, "model");
-    glm::mat4 modelMatrix = glm::rotate(glm::mat4(1.f), glm::radians(this->angle), glm::vec3(1.f, 0.f, 1.f));
+    glm::mat4 modelMatrix = this->getModelMatrix();
     glUniformMatrix4fv(modelMatrixId, 1, GL_FALSE, glm::value_ptr(modelMatrix));
-    this->angle += 1.f;
-    if (this->angle >= 360.f)
-        this->angle -= 360.f;
 
     glDrawElements(GL_TRIANGLES, 12 * 3, GL_UNSIGNED_INT, 0);
 

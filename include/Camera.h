@@ -9,15 +9,21 @@ class Camera
 {
     friend class CameraBuilder;
 public:
-    Camera() = delete;
+    Camera();
+
+    void setPosition(glm::vec3 position);
+    void setTarget(glm::vec3 target);
+    void setUpDirection(glm::vec3 upDirection);
+
+    void setFovDegrees(GLfloat fov);
+    void setAspectRatio(GLfloat aspectRatio);
+    void setNearPlane(GLfloat nearPlane);
+    void setFarPlane(GLfloat farPlane);
+
     glm::mat4 getViewMatrix();
     glm::mat4 getProjectionMatrix();
-    void setViewMatrix(glm::mat4 viewMatrix);
-    void setProjectionMatrix(glm::mat4 projectionMatrix);
 
 private:
-    Camera(glm::mat4 viewMatrix, glm::mat4 projectionMatrix);
-
-    glm::mat4 viewMatrix;
-    glm::mat4 projectionMatrix;
+    glm::vec3 position, target, upDirection;
+    GLfloat fov, aspectRatio, nearPlane, farPlane;
 };

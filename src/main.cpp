@@ -1,10 +1,10 @@
 #include <iostream>
+#include <thread>
 #include "GLEW.h"
 #include "GLFW.h"
 #include "Window.h"
 #include "Cube.h"
-#include "CameraBuilder.h"
-#include <thread>
+#include "Camera.h"
 
 
 int main()
@@ -18,11 +18,13 @@ int main()
         Window window(windowWidth, windowHeight, "gl");
         GLEW glew;
 
-        CameraBuilder cameraBuilder;
-        cameraBuilder.setAspectRatio(float(windowWidth) / windowHeight);
-        cameraBuilder.setCameraPosition(glm::vec3(0.f, 0.f, 1.5f));
-        cameraBuilder.setFovDegrees(45.f);
-        Camera camera = cameraBuilder.getCamera();
+        Camera camera;
+        camera.setAspectRatio(float(windowWidth) / windowHeight);
+        camera.setPosition(glm::vec3(0.f, 0.5f, 1.5f));
+        camera.setFovDegrees(45.f);
+        camera.setFarPlane(10.f);
+
+        window.setCamera(camera);
 
         Cube cube(0.3f);
 
@@ -30,12 +32,12 @@ int main()
         {
             window.clear(Color(0, 0, 0));
 
-            cube.draw(camera.getViewMatrix(), camera.getProjectionMatrix());
+            window.draw(cube);
+            cube.rotateDegrees(0.4f, glm::vec3(1.f, 0.f, 1.f));
+            cube.translate(glm::vec3(0.f, 0.f, -0.01f));
         
             window.swapBuffers();
             window.pollEvents();
-
-
 
             std::this_thread::sleep_for(std::chrono::milliseconds(8));
         }

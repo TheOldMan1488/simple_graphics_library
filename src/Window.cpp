@@ -1,10 +1,12 @@
 #include "Window.h"
+#include "Camera.h"
+#include "Model.h"
 #include <stdexcept>
 #include <GLFW/glfw3.h>
 #include "Color.h"
 
 
-Window::Window(int width, int height,/* const Camera& camera,*/ const std::string& title) //: camera(&camera)
+Window::Window(int width, int height, const std::string& title) : camera(nullptr)
 {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
@@ -24,6 +26,9 @@ Window::Window(int width, int height,/* const Camera& camera,*/ const std::strin
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     glfwSwapInterval(1);
+
+    glfwSetFramebufferSizeCallback(this->window, Window::framebufferSizeCallback);
+    glfwSetWindowUserPointer(this->window, this);
 }
 
 Window::~Window()
@@ -53,7 +58,24 @@ void Window::pollEvents()
     glfwPollEvents();
 }
 
-// void Window::setCamera(const Camera& camera)
-// {
-//     this->camera = &camera;
-// }
+void Window::setCamera(Camera& camera)
+{
+    this->camera = &camera;
+}
+
+void Window::framebufferSizeCallback(GLFWwindow* window, int width, int height)
+{
+    glViewport(0, 0, width, height);
+
+    Window* windowObject = (Window*)glfwGetWindowUserPointer(window);
+    if (!windowObject)
+        return;
+
+    if (windowObject->camera)
+        windowObject->camera->setAspectRatio((float)width / height);
+}
+
+void Window::draw(const Model& model)
+{
+    model.draw(this->camera->getViewMatrix(), this->camera->getProjectionMatrix());
+}
