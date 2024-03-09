@@ -1,26 +1,29 @@
 #pragma once
 #include <string>
-#include <gl/glew.h>
-#include <gl/gl.h>
+#include <GL/glew.h>
+#include <GL/gl.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/quaternion.hpp>
+#include "Transformable.h"
 
 
-class Model
+class Model : public Transformable
 {
 public:    
     Model();
+    Model(Model&& other);
+    Model& operator=(Model&& other);
     virtual ~Model();
 
     virtual void draw(glm::mat4 viewMatrix, glm::mat4 projectionMatrix) const = 0;
 
-    void scale(glm::vec3 scaling);
-    void translate(glm::vec3 translation);
-    void rotateDegrees(GLfloat angle, glm::vec3 axis);
+    virtual void scale(glm::vec3 scaling) override;
+    virtual void translate(glm::vec3 translation) override;
+    virtual void rotateDegrees(GLfloat angle, glm::vec3 axis) override;
     
-    void setScaling(glm::vec3 scaling);
-    void setTranslation(glm::vec3 translation);
-    void setRotationDegrees(GLfloat angle, glm::vec3 axis);
+    virtual void setScaling(glm::vec3 scaling) override;
+    virtual void setTranslation(glm::vec3 translation) override;
+    virtual void setRotationDegrees(GLfloat angle, glm::vec3 axis) override;
 
 protected:
     GLuint VAO;

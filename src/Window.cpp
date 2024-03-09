@@ -11,6 +11,7 @@ Window::Window(int width, int height, const std::string& title) : camera(nullptr
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+    glfwWindowHint(GLFW_SAMPLES, 16);
 
     glViewport(0, 0, 900, 600);
 
@@ -24,6 +25,8 @@ Window::Window(int width, int height, const std::string& title) : camera(nullptr
     glDepthFunc(GL_LESS);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+    glEnable(GL_MULTISAMPLE);
 
     glfwSwapInterval(1);
 

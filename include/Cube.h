@@ -5,7 +5,7 @@
 class Cube : public Model
 {
 public:
-    Cube(float size);
+    Cube(GLfloat size = 1.f, glm::vec3 position = {0.f, 0.f, 0.f});
     
     virtual void draw(glm::mat4 viewMatrix, glm::mat4 projectionMatrix) const override;
 

@@ -1,4 +1,5 @@
 #include <iostream>
+#include <vector>
 #include <thread>
 #include "GLEW.h"
 #include "GLFW.h"
@@ -20,21 +21,26 @@ int main()
 
         Camera camera;
         camera.setAspectRatio(float(windowWidth) / windowHeight);
-        camera.setPosition(glm::vec3(0.f, 0.5f, 1.5f));
+        camera.setTranslation(glm::vec3(0.f, 0.f, 1.5f));
         camera.setFovDegrees(45.f);
-        camera.setFarPlane(10.f);
 
         window.setCamera(camera);
 
-        Cube cube(0.3f);
+        std::vector<Cube> cubes;
+        cubes.emplace_back(0.2f, glm::vec3(-1.5f, 1.5f, 0.f));
+        cubes.emplace_back(0.2f, glm::vec3(1.5f, 1.5f, 0.f));
+        cubes.emplace_back(0.2f, glm::vec3(-1.5f, -1.5f, 0.f));
+        cubes.emplace_back(0.2f, glm::vec3(1.5f, -1.5f, 0.f));
 
         while (!window.shouldClose())
         {
             window.clear(Color(0, 0, 0));
 
-            window.draw(cube);
-            cube.rotateDegrees(0.4f, glm::vec3(1.f, 0.f, 1.f));
-            cube.translate(glm::vec3(0.f, 0.f, -0.01f));
+            for (Cube& cube : cubes)
+                window.draw(cube);
+
+            for (Cube& cube : cubes)
+                cube.rotateDegrees(1.f, glm::vec3(1.f, 0.f, 0.f));
         
             window.swapBuffers();
             window.pollEvents();

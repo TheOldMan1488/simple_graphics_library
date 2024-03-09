@@ -13,7 +13,46 @@ Model::Model() :
     translation(0.f, 0.f, 0.f),
     rotation(1.f, 0.f, 0.f, 0.f)
 {
+}
 
+Model::Model(Model&& other) :
+    VAO(other.VAO),
+    positionVBO(other.positionVBO),
+    colorVBO(other.colorVBO),
+    indexEBO(other.indexEBO),
+    shaderProgram(other.shaderProgram),
+    scaling(other.scaling),
+    translation(other.translation),
+    rotation(other.rotation)
+{
+    other.VAO = 0;
+    other.positionVBO = 0;
+    other.colorVBO = 0;
+    other.indexEBO = 0;
+    other.shaderProgram = 0;
+}
+
+Model& Model::operator=(Model&& other)
+{
+    if (this == &other)
+        return *this;
+
+    this->VAO = other.VAO;
+    this->positionVBO = other.positionVBO;
+    this->colorVBO = other.colorVBO;
+    this->indexEBO = other.indexEBO;
+    this->shaderProgram = other.shaderProgram;
+    this->scaling = other.scaling;
+    this->translation = other.translation;
+    this->rotation = other.rotation;
+
+    other.VAO = 0;
+    other.positionVBO = 0;
+    other.colorVBO = 0;
+    other.indexEBO = 0;
+    other.shaderProgram = 0;
+
+    return *this;
 }
 
 Model::~Model()

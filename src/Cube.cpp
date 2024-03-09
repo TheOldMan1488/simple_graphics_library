@@ -6,7 +6,7 @@
 #include <glsl_loader/ShaderLoader.h>
 
 
-Cube::Cube(float size)
+Cube::Cube(GLfloat size, glm::vec3 position)
 {
     glGenVertexArrays(1, &this->VAO);
     glBindVertexArray(this->VAO);
@@ -14,14 +14,14 @@ Cube::Cube(float size)
     glGenBuffers(1, &this->positionVBO);
     glBindBuffer(GL_ARRAY_BUFFER, this->positionVBO);
     GLfloat vertices[] = {
-        -size, -size, size,//A  0
-        size, -size, size,//B   1
-        size, -size, -size,//C  2
-        -size, -size, -size,//D 3
-        -size, size, size,//A1  4
-        size, size, size,//B1   5
-        size, size, -size,//C1  6
-        -size, size, -size//D1  7
+        -1.f, -1.f, 1.f,//A  0
+        1.f, -1.f, 1.f,//B   1
+        1.f, -1.f, -1.f,//C  2
+        -1.f, -1.f, -1.f,//D 3
+        -1.f, 1.f, 1.f,//A1  4
+        1.f, 1.f, 1.f,//B1   5
+        1.f, 1.f, -1.f,//C1  6
+        -1.f, 1.f, -1.f//D1  7
     };
 
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
@@ -74,6 +74,9 @@ Cube::Cube(float size)
     glAttachShader(this->shaderProgram, fragmentShader.getId());
     glAttachShader(this->shaderProgram, vertexShader.getId());
     glLinkProgram(this->shaderProgram);
+
+    this->setScaling(glm::vec3(size));
+    this->setTranslation(position);
 }   
 
 void Cube::draw(glm::mat4 viewMatrix, glm::mat4 projectionMatrix) const
